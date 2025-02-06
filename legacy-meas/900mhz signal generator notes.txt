@@ -1,0 +1,7 @@
+I have a device called TinySA. It is a small handheld spectrum analyzer that I bought
+off of Amazon for $65. 
+
+https://www.amazon.com/dp/B08H1S2SYR?psc=1&ref=ppx_yo2ov_dt_b_product_details
+
+It has a range of 100kHz to 960MHz. It also happens to be a signal generator. I tested
+its 900MHz gsignal generation and captured it with Chanalyzer
