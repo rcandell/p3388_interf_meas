@@ -83,10 +83,12 @@ classdef intfmeas < handle
             tt = [0; (seconds(cumsum(tt)))];  % in seconds from the beginning
         end
 
-        function savePlotTo(hFig, sPathToFolder, sRootName, sPlotTypeName)
-            fpath = strcat(sPathToFolder, '/', sRootName, '_', sPlotTypeName);
-            savefig(hFig, strcat(fpath, '.fig'));
-            print(hFig, strcat(fpath, '.png'), '-dpng', '-r300');
+        function [figPathFull, pngPathFull] = savePlotTo(hFig, sPathToFolder, sRootName, sPlotTypeName)
+            fpath = strcat(sPathToFolder, '/', sRootName, ' - ', sPlotTypeName);
+            figPathFull = strcat(fpath, '.fig');
+            savefig(hFig, figPathFull);
+            pngPathFull = strcat(fpath, '.png');
+            print(hFig, pngPathFull, '-dpng', '-r300');
         end
 
         function addWifiChannelToPlot(fRangeMeas, f_scale, color, FaceAlpha, EdgeColor, LineStyle)
@@ -123,11 +125,10 @@ classdef intfmeas < handle
             % by power
             % assuming the out of power range already set to -Inf
             dist = abs(ZI(3) - ZJ(:,3));  
+
             % now by distance in frequency
             indsFar = abs(ZJ(:,1)-ZI(1)) > intfmeas.maxDistanceDBSCAN_Hz;
             dist(indsFar) = nan;
-
-            % TODO: add time constraint
 
         end
 
