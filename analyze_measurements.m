@@ -10,6 +10,7 @@ fclose all;
 
 % meta data path
 meta_path = './metadata.xlsx';
+regions_dir = 'regions';
 report_path = './report.tex';
 
 % output files
@@ -30,13 +31,13 @@ R.open();
 PMAP_ON = false;
 PSPEC_ON = false;
 PUTIL_ON = false;
-PREGIONS_ON = false;
-DBSCAN_ON = true;
+PREGIONS_ON = true;
+DBSCAN_ON = false;
 SAVEWS_ON = false;
 
 % loop through each row of the meta table
-% for jj = 1:height(meta_data_tbl)
-for jj = 5
+for jj = 1:height(meta_data_tbl)
+
     % construct an analysis object
     A = intfmeas(meta_data_tbl, jj, path_to_plots);
 
@@ -92,22 +93,36 @@ for jj = 5
     %  The P3388 should be set for the technology at hand.
     if PREGIONS_ON
         figure()
-        A.computeBandwidthDurationsAboveThresholds(mean(intfmeas.UtilizationThresholds), 1, 1, tscale, fscale);
-        title('All Interference Regions for ' + A.meas_name + ' above thresh')
+        preg_thresh = mean(intfmeas.UtilizationThresholds);
+        A.computeBandwidthDurationsAboveThresholds(preg_thresh, 1, 1, tscale, fscale);
+        thresh_str = string(preg_thresh);
+        title('All Regions for ' + A.meas_name + ' above thresh ' + thresh_str + ' dBm');
         [~, pngPathFull] = intfmeas.savePlotTo(gcf, path_to_plots, A.meas_name, 'allregions');
         R.addSubSubSection('Clustering by Interference Regions');
         R.addPngFigure(latexreport.FIG_FLOAT, pngPathFull, ...
             'All interference regions found without deselection applied.');
-    end
 
-    % Filtered for large regions only
-    if PUTIL_ON
+
+        % write to a text file
+        regions_fname = regions_dir + "/" + A.meas_name + " - allregs.csv";
+        fidRegions = fopen(regions_fname,'w');
+        fprintf(fidRegions, 'Start Freq (MHz), Start Time (s), Duration, Bandwidth (MHz)'); 
+        fclose(fidRegions);
+        writetable(A.connectedRegionBoxesScaled, regions_fname, 'WriteMode','append')        
+
         figure()
-        A.computeBandwidthDurationsAboveThresholds(mean(intfmeas.UtilizationThresholds), 25, 0.999, tscale, fscale);
-        title('Large Interference Regions for ' + A.meas_name + ' above thresh')
+        A.computeBandwidthDurationsAboveThresholds(preg_thresh, 25, 0.999, tscale, fscale);
+        title('Large Regions for ' + A.meas_name + ' above thresh ' + thresh_str + ' dBm');
         intfmeas.addWifiChannelToPlot(xlim*1e6, fscale, 'yellow', 0.1, 'y', '--');
         [~, pngPathFull] = intfmeas.savePlotTo(gcf, path_to_plots, A.meas_name, 'filteredregions');
         R.addPngFigure(latexreport.FIG_FLOAT, pngPathFull, 'Large interference regions only.');
+
+        % write to a text file
+        regions_fname = regions_dir + "/" + A.meas_name + " - lgregs.csv";
+        fidLgRegions = fopen(regions_fname,'w');
+        fprintf(fidLgRegions, 'Start Time (s), Start Freq (MHz), Duration, Bandwidth (MHz)'); 
+        fclose(fidLgRegions);
+        writetable(A.connectedRegionBoxesScaled, regions_fname, 'WriteMode','append')            
     end
 
     % Using DBSCAN Clustering
