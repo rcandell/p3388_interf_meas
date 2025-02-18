@@ -11,8 +11,6 @@ function metadata = importMeta(workbookFile, sheetName, dataLines)
 %  DATALINES as a positive scalar integer or a N-by-2 array of positive
 %  scalar integers for dis-contiguous row intervals.
 %
-%  Example:
-%  metadata = importfile("D:\meas\Interference-ScottMcNeil\metadata.xlsx", "Sheet1", [3, Inf]);
 %
 %  See also READTABLE.
 %

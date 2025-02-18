@@ -1,15 +1,13 @@
 function X = importDataFile(filename, dataLines)
 %IMPORTFILE Import data from a text file
-%  CERAMICSMICROWAVEDRYER = IMPORTFILE(FILENAME) reads data from text
+%  X = IMPORTFILE(FILENAME) reads data from text
 %  file FILENAME for the default selection.  Returns the data as a table.
 %
-%  CERAMICSMICROWAVEDRYER = IMPORTFILE(FILE, DATALINES) reads data for
+%  X = IMPORTFILE(FILE, DATALINES) reads data for
 %  the specified row interval(s) of text file FILENAME. Specify
 %  DATALINES as a positive scalar integer or a N-by-2 array of positive
 %  scalar integers for dis-contiguous row intervals.
 %
-%  Example:
-%  Ceramicsmicrowavedryer = importfile("D:\meas\Interference-ScottMcNeil\dryer-second-meas\Ceramics microwave dryer.csv", [1, Inf]);
 %
 %  See also READTABLE.
 %

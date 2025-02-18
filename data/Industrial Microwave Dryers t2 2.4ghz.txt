@@ -1,0 +1,2 @@
+Distance from measurement antenna to dryer: 
+RF band: 

@@ -28,12 +28,12 @@ R = latexreport(report_path);
 R.open();
 
 % what to enable
-PMAP_ON = false;
-PSPEC_ON = false;
-PUTIL_ON = false;
+PMAP_ON = true;
+PSPEC_ON = true;
+PUTIL_ON = true;
 PREGIONS_ON = true;
-DBSCAN_ON = false;
-SAVEWS_ON = false;
+DBSCAN_ON = true;
+SAVEWS_ON = true;
 
 % loop through each row of the meta table
 for jj = 1:height(meta_data_tbl)
@@ -87,10 +87,7 @@ for jj = 1:height(meta_data_tbl)
     end
 
     % Using IMAGE Processing Clustering
-    % determine bandwidths and durations above thresholds
-    % Typical CCA Threshold Values: For many Wi-Fi devices, the CCA
-    % threshold is set around -82 dBm to -65 dBm.  We use the average here.
-    %  The P3388 should be set for the technology at hand.
+    % Identify power regions above set thresholds
     if PREGIONS_ON
         figure()
         preg_thresh = mean(intfmeas.UtilizationThresholds);
